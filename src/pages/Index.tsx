@@ -5,6 +5,12 @@ import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import Icon from '@/components/ui/icon';
 import { toast } from 'sonner';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 type Step = 'welcome' | 'promo' | 'select-type' | 'username' | 'sending' | 'success';
 type RecipientType = 'bot' | 'user' | 'channel' | null;
@@ -15,6 +21,27 @@ const Index = () => {
   const [recipientType, setRecipientType] = useState<RecipientType>(null);
   const [username, setUsername] = useState('');
   const [progress, setProgress] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const playSuccessSound = () => {
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+    oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
+
+    oscillator.type = 'sine';
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.5);
+  };
 
   useEffect(() => {
     if (step === 'sending') {
@@ -39,6 +66,7 @@ const Index = () => {
 
   const handlePromoSubmit = () => {
     if (promoCode.toLowerCase() === 'ranalda228') {
+      playSuccessSound();
       toast.success('Промокод активирован!', {
         description: 'Подписка успешно активирована',
       });
@@ -66,6 +94,57 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4 relative overflow-hidden">
+      <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-4 right-4 z-50 text-orange-500 hover:text-orange-400 hover:bg-orange-500/10"
+          >
+            <Icon name="Menu" size={24} />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          align="end"
+          className="w-56 bg-black/95 border-orange-500/30 backdrop-blur-sm"
+        >
+          <DropdownMenuItem
+            className="text-white hover:bg-orange-500/20 hover:text-orange-400 cursor-pointer focus:bg-orange-500/20 focus:text-orange-400"
+            onClick={() => {
+              toast.info('Привет от админа! 👋', {
+                description: 'Спасибо, что пользуетесь Leonardo.pizza!',
+              });
+              setMenuOpen(false);
+            }}
+          >
+            <Icon name="Heart" className="mr-2" size={16} />
+            Привет от админа
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="text-white hover:bg-orange-500/20 hover:text-orange-400 cursor-pointer focus:bg-orange-500/20 focus:text-orange-400"
+            onClick={() => {
+              toast.info('О работе пиццы 🍕', {
+                description: 'Leonardo.pizza доставляет виртуальную пиццу в Telegram боты, каналы и пользователям!',
+              });
+              setMenuOpen(false);
+            }}
+          >
+            <Icon name="Info" className="mr-2" size={16} />
+            О работе пиццы
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="text-white hover:bg-orange-500/20 hover:text-orange-400 cursor-pointer focus:bg-orange-500/20 focus:text-orange-400"
+            onClick={() => {
+              setStep('promo');
+              setMenuOpen(false);
+            }}
+          >
+            <Icon name="Ticket" className="mr-2" size={16} />
+            Перейти к промокоду
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
       <div className="absolute inset-0 bg-gradient-to-br from-orange-900/20 via-black to-black"></div>
       
       <div className="absolute top-0 left-0 w-full h-full opacity-10">
