@@ -438,8 +438,8 @@ const Index = () => {
               <div className="flex items-center gap-3">
                 <div className="text-3xl">🤝</div>
                 <div>
-                  <p className="font-semibold text-orange-400">Мой друг Ваня</p>
-                  <p className="text-sm text-gray-300">Лучший друг и помощник!</p>
+                  <p className="font-semibold text-orange-400">Drekkorta</p>
+                  <p className="text-sm text-gray-300">Передаю привет от leonardo.pizza</p>
                 </div>
               </div>
             </div>
