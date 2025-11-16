@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import Icon from '@/components/ui/icon';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +24,7 @@ type Step = 'welcome' | 'promo' | 'select-type' | 'username' | 'sending' | 'succ
 type RecipientType = 'bot' | 'user' | 'channel' | null;
 
 const Index = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState<Step>('welcome');
   const [promoCode, setPromoCode] = useState('');
   const [recipientType, setRecipientType] = useState<RecipientType>(null);
@@ -129,9 +131,7 @@ const Index = () => {
           <DropdownMenuItem
             className="text-white hover:bg-orange-500/20 hover:text-orange-400 cursor-pointer focus:bg-orange-500/20 focus:text-orange-400"
             onClick={() => {
-              toast.info('О работе пиццы 🍕', {
-                description: 'Leonardo.pizza доставляет виртуальную пиццу в Telegram боты, каналы и пользователям!',
-              });
+              navigate('/about');
               setMenuOpen(false);
             }}
           >
