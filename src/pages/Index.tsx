@@ -20,7 +20,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 
-type Step = 'welcome' | 'promo' | 'select-type' | 'username' | 'sending' | 'success';
+type Step = 'welcome' | 'promo' | 'select-type' | 'username' | 'text-message' | 'sending' | 'success';
 type RecipientType = 'bot' | 'user' | 'channel' | null;
 
 const Index = () => {
@@ -29,6 +29,7 @@ const Index = () => {
   const [promoCode, setPromoCode] = useState('');
   const [recipientType, setRecipientType] = useState<RecipientType>(null);
   const [username, setUsername] = useState('');
+  const [textMessage, setTextMessage] = useState('');
   const [progress, setProgress] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [thanksDialogOpen, setThanksDialogOpen] = useState(false);
@@ -281,6 +282,20 @@ const Index = () => {
                     </div>
                   </div>
                 </Button>
+
+                <Button
+                  onClick={() => setStep('text-message')}
+                  className="w-full bg-black/50 border border-orange-500/30 hover:bg-orange-500/20 hover:border-orange-500 text-white h-14 justify-start text-left group"
+                  variant="outline"
+                >
+                  <div className="flex items-center gap-3 w-full">
+                    <Icon name="Mail" className="group-hover:text-orange-500 transition-colors" size={24} />
+                    <div>
+                      <div className="font-semibold">Почтовая пицца</div>
+                      <div className="text-xs text-gray-400">С текстовым сообщением</div>
+                    </div>
+                  </div>
+                </Button>
               </div>
 
               <Button
@@ -291,6 +306,52 @@ const Index = () => {
                 <Icon name="ArrowLeft" className="mr-2" size={16} />
                 Назад
               </Button>
+            </div>
+          )}
+
+          {step === 'text-message' && (
+            <div className="space-y-6 animate-fade-in">
+              <div className="text-center">
+                <div className="text-5xl mb-4">📬</div>
+                <h2 className="text-2xl font-bold text-orange-500 mb-2">Почтовая пицца</h2>
+                <p className="text-gray-400 text-sm">
+                  Введите текст сообщения и получателя
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <Input
+                  value={textMessage}
+                  onChange={(e) => setTextMessage(e.target.value)}
+                  placeholder="Текст пиццы"
+                  className="bg-black/50 border-orange-500/30 focus:border-orange-500 text-white text-center text-lg h-12"
+                />
+
+                <Input
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="@username получателя"
+                  className="bg-black/50 border-orange-500/30 focus:border-orange-500 text-white text-center text-lg h-12"
+                  onKeyPress={(e) => e.key === 'Enter' && handleUsernameSubmit()}
+                />
+
+                <Button 
+                  onClick={handleUsernameSubmit}
+                  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-black font-semibold h-12"
+                >
+                  Отправить пиццу
+                  <Icon name="Send" className="ml-2" size={18} />
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  onClick={() => setStep('select-type')}
+                  className="w-full text-gray-400 hover:text-white hover:bg-white/5"
+                >
+                  <Icon name="ArrowLeft" className="mr-2" size={16} />
+                  Назад
+                </Button>
+              </div>
             </div>
           )}
 
@@ -438,7 +499,7 @@ const Index = () => {
               <div className="flex items-center gap-3">
                 <div className="text-3xl">🤝</div>
                 <div>
-                  <p className="font-semibold text-orange-400">Drekkorta</p>
+                  <p className="font-semibold text-orange-400">Drekorta</p>
                   <p className="text-sm text-gray-300">Передаю привет от leonardo.pizza</p>
                 </div>
               </div>
