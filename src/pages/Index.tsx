@@ -20,7 +20,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 
-type Step = 'welcome' | 'promo' | 'select-type' | 'username' | 'text-message' | 'sending' | 'success';
+type Step = 'welcome' | 'promo' | 'select-type' | 'username' | 'text-message' | 'sending' | 'success' | 'free-pizza';
 type RecipientType = 'bot' | 'user' | 'channel' | null;
 
 const Index = () => {
@@ -148,6 +148,16 @@ const Index = () => {
           >
             <Icon name="Ticket" className="mr-2" size={16} />
             Перейти к промокоду
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="text-white hover:bg-orange-500/20 hover:text-orange-400 cursor-pointer focus:bg-orange-500/20 focus:text-orange-400"
+            onClick={() => {
+              setStep('free-pizza');
+              setMenuOpen(false);
+            }}
+          >
+            <Icon name="Gift" className="mr-2" size={16} />
+            Бесплатная пицца
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -395,6 +405,52 @@ const Index = () => {
                   Назад
                 </Button>
               </div>
+            </div>
+          )}
+
+          {step === 'free-pizza' && (
+            <div className="space-y-6 animate-fade-in">
+              <div className="text-center">
+                <div className="text-5xl mb-4">🎁</div>
+                <h2 className="text-2xl font-bold text-orange-500 mb-2">Бесплатная пицца</h2>
+                <p className="text-gray-400 text-sm">
+                  50 почтовых пицц бесплатно!
+                </p>
+              </div>
+
+              <div className="bg-orange-500/10 border border-orange-500/30 rounded-lg p-6 space-y-4">
+                <div className="text-center space-y-3">
+                  <p className="text-white font-medium text-lg">
+                    Как получить бесплатные пиццы?
+                  </p>
+                  <div className="space-y-2 text-gray-300 text-sm">
+                    <p>1. Подпишитесь на проект "Тихий омут"</p>
+                    <p>2. Получите 50 бесплатных почтовых пицц</p>
+                    <p>3. Отправляйте сообщения с эмодзи пиццы!</p>
+                  </div>
+                </div>
+
+                <Button
+                  onClick={() => window.open('https://t.me/+KRT20SAnApA3ZThh', '_blank')}
+                  className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold h-12"
+                >
+                  <Icon name="ExternalLink" className="mr-2" size={18} />
+                  Подписаться на "Тихий омут"
+                </Button>
+
+                <div className="text-center text-xs text-gray-400 pt-2">
+                  После подписки вернитесь сюда для активации
+                </div>
+              </div>
+
+              <Button
+                variant="ghost"
+                onClick={() => setStep('welcome')}
+                className="w-full text-gray-400 hover:text-white hover:bg-white/5"
+              >
+                <Icon name="ArrowLeft" className="mr-2" size={16} />
+                Назад
+              </Button>
             </div>
           )}
 
