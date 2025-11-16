@@ -11,6 +11,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 
 type Step = 'welcome' | 'promo' | 'select-type' | 'username' | 'sending' | 'success';
 type RecipientType = 'bot' | 'user' | 'channel' | null;
@@ -22,6 +29,7 @@ const Index = () => {
   const [username, setUsername] = useState('');
   const [progress, setProgress] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [thanksDialogOpen, setThanksDialogOpen] = useState(false);
 
   const playSuccessSound = () => {
     const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -111,9 +119,7 @@ const Index = () => {
           <DropdownMenuItem
             className="text-white hover:bg-orange-500/20 hover:text-orange-400 cursor-pointer focus:bg-orange-500/20 focus:text-orange-400"
             onClick={() => {
-              toast.info('Привет от админа! 👋', {
-                description: 'Спасибо, что пользуетесь Leonardo.pizza!',
-              });
+              setThanksDialogOpen(true);
               setMenuOpen(false);
             }}
           >
@@ -404,6 +410,58 @@ const Index = () => {
       <div className="absolute bottom-4 text-center w-full text-gray-600 text-xs">
         Leonardo.pizza © 2024
       </div>
+
+      <Dialog open={thanksDialogOpen} onOpenChange={setThanksDialogOpen}>
+        <DialogContent className="bg-black/95 border-orange-500/30 backdrop-blur-sm text-white max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-orange-500 text-center flex items-center justify-center gap-2">
+              <Icon name="Heart" size={28} className="text-orange-500" />
+              Привет от админа
+            </DialogTitle>
+            <DialogDescription className="text-gray-400 text-center">
+              Особые благодарности
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="bg-orange-500/10 border border-orange-500/30 rounded-lg p-4 hover:bg-orange-500/20 transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="text-3xl">👨‍💻</div>
+                <div>
+                  <p className="font-semibold text-orange-400">@zeytoz</p>
+                  <p className="text-sm text-gray-300">Спасибо за поддержку!</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-orange-500/10 border border-orange-500/30 rounded-lg p-4 hover:bg-orange-500/20 transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="text-3xl">🤝</div>
+                <div>
+                  <p className="font-semibold text-orange-400">Мой друг Ваня</p>
+                  <p className="text-sm text-gray-300">Лучший друг и помощник!</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-orange-500/10 border border-orange-500/30 rounded-lg p-4 hover:bg-orange-500/20 transition-colors">
+              <div className="flex items-center gap-3">
+                <div className="text-3xl">🌊</div>
+                <div>
+                  <p className="font-semibold text-orange-400">Проект "Тихий омут"</p>
+                  <p className="text-sm text-gray-300">За вдохновение и идеи!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center pt-2">
+            <p className="text-sm text-gray-400 italic">
+              Спасибо, что пользуетесь Leonardo.pizza! 🍕
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
